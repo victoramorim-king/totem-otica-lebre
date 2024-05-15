@@ -1,0 +1,39 @@
+.title-container {
+  background-color: white;
+  border: 1px solid #d0f3c1;
+  width: 70%;
+  text-align: center;
+  margin: 100px auto;
+  border-radius: 30px;
+  font-size: 24px;
+}
+
+.title {
+  text-transform: uppercase;
+  margin: 10px 0;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: start;
+  row-gap: 50px;
+  padding: 0 25px 100px;
+  max-height: 65vh;
+  overflow-y: auto;
+  margin: 50px 0;
+}
+
+.description-input {
+  background-color: rgb(203, 224, 193);
+  border: none;
+  border-radius: 10px;
+  height: 180px;
+  width: 80%;
+  padding: 10px;
+}
+
+.description-input:focus-visible {
+  outline: none;
+}

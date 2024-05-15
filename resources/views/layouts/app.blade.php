@@ -13,6 +13,12 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link href="{{ asset('/css/menu.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/totem.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -81,11 +87,14 @@
             @include('layouts.sidebar') 
         @endauth
 
-        <main class="py-4">
-
+        <main id="main-content">
             @yield('content')
         </main>
     </div>
+    <script src="{{ asset('/js/menu.js') }}"></script>
+    <script src="{{ asset('/js/addButton.js') }}"></script>
+    <script src="{{ asset('/js/editButton.js') }}"></script>
+    <script src="{{ asset('/js/quit.js') }}"></script>
 </body>
 
 </html>

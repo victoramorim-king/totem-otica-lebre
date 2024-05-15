@@ -9,37 +9,39 @@
     <p class="subtitle">Principal</p>
     <div class="buttons-container">
         <a class="menu-button menu-button-active">
-            <img src="../images/home.png" />
+            <img src="{{ asset('/images/admin/home.png') }}" title="home">
             <p>Menu</p>
         </a>
-        <a class="menu-button" href="./lentes.php">
-            <img src="../images/lentes-de-contato.png" />
+        <a class="menu-button" href="lentes">
+            <img src="{{ asset('/images/admin/lentes-de-contato.png') }}"  title="Lentes de contato">
             <p>Lentes</p>
         </a>
-        <a class="menu-button" href="./videos.php">
-            <img src="../images/play.png" />
+        <a class="menu-button" href="videos">
+            <img src="{{ asset('/images/admin/play.png') }}"  title="Vídeos">
             <p>Videos</p>
         </a>
-        <a class="menu-button" href="./galeria.php">
-            <img src="../images/galeria.png" />
+        <a class="menu-button" href="galeria">
+            <img src="{{ asset('/images/admin/galeria.png') }}"  title="Galeria">
             <p>Galeria</p>
         </a>
-        <a class="menu-button" href="./desativados.php">
-            <img src="../images/pasta.png" />
+        <a class="menu-button" href="/desativados">
+            <img src="{{ asset('/images/admin/pasta.png') }}"  title="Desativados">
             <p>Desativados</p>
         </a>
     </div>
     <div class="account-container">
         <p>Conta</p>
-        <a class="menu-button" href="./configuracoes.php">
-            <img src="../images/configuracao.png" />
+        <a class="menu-button">
+            <img src="{{ asset('/images/admin/configuracao.png') }}"  title="Configuração">
             <p>Configurações</p>
         </a>
-        <a class="menu-button" id="logout-button">
-            <img src="../images/desligar.png" />
+        <a class="menu-button" id="logout-button" href="{{ route('logout') }}" onclick="event.preventDefault();  document.getElementById('logout-form').submit();">
+            <img src="{{ asset('/images/admin/desligar.png') }}"  title="Desligar">
+            <p>Desligar</p>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                 @csrf
             </form>
+            
         </a>
     </div>
 </aside>

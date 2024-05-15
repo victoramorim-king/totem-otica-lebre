@@ -1,0 +1,75 @@
+.container {
+  background-color: #d0f3c1;
+}
+
+#logo {
+  display: flex;
+  margin: 70px auto;
+  height: 30%;
+}
+
+.button-group {
+  display: grid;
+  margin: 5% 0;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 85px 10px;
+  justify-items: center;
+}
+
+.button-group-camera {
+  display: grid;
+  margin: 15% 0 0;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  justify-items: center;
+}
+
+.button {
+  width: fit-content;
+  background-color: white;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid black;
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
+}
+
+.button-grid {
+  display: grid;
+}
+
+.image-container {
+  padding: 15px 40px 10px;
+}
+
+.image-container-smaller {
+  padding: 15px 35px 10px;
+}
+
+.image-container-spaced {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 40px 10px;
+  /* position: fixed; */
+  bottom: 60px;
+  width: -webkit-fill-available;
+  background-color: #cbe0c1;
+}
+
+.image-container-smaller img {
+  height: 60px;
+}
+
+.text-container {
+  background-color: #d0f3c1;
+  padding: 15px;
+  border-radius: 0 0 15px 15px;
+  border-top: 1px solid black;
+}
+
+.text-button {
+  margin: 0;
+  text-transform: uppercase;
+}

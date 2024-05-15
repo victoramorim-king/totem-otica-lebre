@@ -21,3 +21,22 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+// Rota para a página de lentes
+Route::get('/lentes', function () {
+    return view('lentes');
+});
+
+// Rota para a página de vídeos
+Route::get('/videos', function () {
+    return view('videos');
+});
+
+// Rota para a página de galeria
+Route::get('/galeria', function () {
+    return view('galeria');
+});
+
+// Rota para a página de desativados
+Route::get('/desativados', function () {
+    return view('desativados');
+});

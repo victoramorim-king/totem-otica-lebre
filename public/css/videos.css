@@ -1,0 +1,45 @@
+.title-container {
+  background-color: white;
+  border: 1px solid #d0f3c1;
+  width: 70%;
+  text-align: center;
+  margin: 100px auto;
+  border-radius: 30px;
+  font-size: 24px;
+}
+
+.title {
+  text-transform: uppercase;
+  margin: 10px 0;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: start;
+  row-gap: 50px;
+  padding: 0 25px 100px;
+  max-height: 65vh;
+  min-height: 300px;
+  overflow-y: auto;
+  margin: 50px 0;
+}
+
+.galery-videos {
+  object-fit: cover;
+  width: 200px;
+  height: 200px;
+  border: 1px solid #143370;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.add-video-btn {
+  height: 180px;
+  width: 180px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
