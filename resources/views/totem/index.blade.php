@@ -16,9 +16,10 @@
                 <img src="{{ asset('/images/logo.png') }}" id="logo" />
             </div>
         </div>
+
         <div id="content">
         </div>
-       
+
         <div id="footer">
             <button id="footer-btn-1">Voltar</button>
             <p id="footer-label">Galeria</p>
@@ -54,6 +55,8 @@
 
 
         function cabecalhoPequeno() {
+            document.getElementById('capa').style.position = 'fixed';
+            document.getElementById('capa').style.zIndex = '2';
             document.getElementById('capa').style.height = '14vh';
             document.getElementById('capa').style.width = '200%';
             document.getElementById('capa').style.borderRadius = '0 0 100% 100%';

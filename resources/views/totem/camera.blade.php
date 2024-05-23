@@ -1,6 +1,7 @@
-<div id="camera-page" class="video-container fade-in" style="background-color: grey;">
-    <video id="video" autoplay></video>
-    <button onclick="iniciarCamera()">Iniciar Cãmera</button>
-
+<div class="video-container">
+    <div class="camera">
+        <video id="video" autoplay></video>
+    </div>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <button id="snap-btn">Tirar Foto</button>
 </div>
-

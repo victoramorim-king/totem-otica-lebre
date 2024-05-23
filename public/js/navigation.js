@@ -88,7 +88,9 @@ function openCamera() {
     toogleFadeInOut(currentPage)
     navigateTo('camera')
     hideFooter()
-    const video = document.getElementById('video');
+
+
+
 
 
     // Função para listar dispositivos de mídia
@@ -102,13 +104,14 @@ function openCamera() {
         const constraints = {
             video: {
                 deviceId: cameraId,
-                width: { ideal: 1080 },
-                height: { ideal: 1920 }
+                width: { ideal: 3840 },
+                height: { ideal: 2160 }
             }
         };
 
         try {
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            const video = document.getElementById('video');
             video.srcObject = stream;
         } catch (err) {
             console.error('Erro ao acessar a câmera: ' + err);
