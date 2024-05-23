@@ -13,30 +13,44 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// Rota para a página de lentes
-Route::get('/lentes', function () {
-    return view('lentes');
+Route::get('/', function () {
+    return view('totem.index');
 });
 
-// Rota para a página de vídeos
-Route::get('/videos', function () {
-    return view('videos');
+
+// Totem Content
+Route::get('/menu-content', function () {
+    return view('totem.menu');
 });
 
-// Rota para a página de galeria
-Route::get('/galeria', function () {
-    return view('galeria');
+// Totem Content
+Route::get('/galeria-content', function () {
+    return view('totem.galeria');
 });
 
-// Rota para a página de desativados
-Route::get('/desativados', function () {
-    return view('desativados');
+// Totem Content
+Route::get('/videos-content', function () {
+    return view('totem.videos');
 });
+
+// Totem Content
+Route::get('/camera-content', function () {
+    return view('totem.camera');
+});
+
+// Totem Content
+Route::get('/comparacao-content', function () {
+    return view('totem.comparacao');
+});
+
+Route::get('/admin', function () {
+    return view('admin.index');
+});
+
+
+
+
+

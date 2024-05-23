@@ -1,7 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
-<div class="container">
+<div id="videos-page" class="container fade-in">
     <!-- TELA DE EDIÇÃO DE BOTÕES -->
 
     <div class="divider-screen">
@@ -44,4 +41,3 @@
         </section>
     </div>
 </div>
-@endsection
