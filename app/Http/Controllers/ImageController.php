@@ -8,11 +8,44 @@ use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
-    public function index()
+    public function index($tipo)
     {
-        $images = Image::all();
-        return response()->json($images);
+        $lentes = [];
+        $clientes = [];
+
+        // Preenchendo o array de lentes
+        for ($i = 0; $i < 18; $i++) {
+            $lentes[] = [
+                'filename' => 'lente',
+                'path' => asset('images/lentes/teste1.png'),
+                'active' => 'true',
+                'category' => 'lentes',
+            ];
+        }
+
+        // Preenchendo o array de clientes
+        for ($i = 0; $i < 18; $i++) {
+            $clientes[] = [
+                'filename' => 'cliente',
+                'path' => asset('images/clientes/oculos4.png'),
+                'active' => 'true',
+                'category' => 'clientes',
+            ];
+        }
+
+        switch ($tipo) {
+            case "lentes":
+                return response()->json($lentes);
+                break;
+            case "clientes":
+                return response()->json($clientes);
+                break;
+            default:
+                return response()->json([]); // Retorna um array vazio se o tipo não for correspondido
+                break;
+        }
     }
+
 
     public function store(Request $request)
     {

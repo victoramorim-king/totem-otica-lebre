@@ -19,11 +19,53 @@
 
         <div id="content">
         </div>
+        <div class="video-container fade-in">
+            <div class="camera">
+                <video id="video" autoplay></video>
+            </div>
+            <canvas id="canvas" style="display:none;"></canvas>
+            <div class="camera-buttons-container fade-in">
+                <div class="camera-button" onclick="closeCamera()">
+                    <img src="{{asset('/images/icons/go-back.png')}}">
+                </div>
+                <div class="camera-button">
+                    <img src="{{asset('/images/icons/camera.png')}}">
+                </div>
+                <div class="camera-button">
+                    <img src="{{asset('/images/icons/cronometro.png')}}">
+                </div>
+            </div>
+
+        </div>
+
 
         <div id="footer">
-            <button id="footer-btn-1">Voltar</button>
-            <p id="footer-label">Galeria</p>
-            <button id="footer-btn-2">Abrir Camera</button>
+            <div id="footer-btn-1" class="footer-button">
+                <img src="{{asset('/images/icons/go-back.png')}}">
+            </div>
+
+            <p id="footer-label"><u>Galeria</u></p>
+            <div id="footer-btn-2" class="footer-button">
+                <img src="{{asset('/images/icons/camera.png')}}">
+            </div>
+            <span id="footer-btn-span"></span>
+            <div id="footer-btn-3" class="footer-button">
+                <img src="{{asset('/images/icons/go-back.png')}}">
+            </div>
+            <div id="footer-btn-4" class="footer-button">
+                <img src="{{asset('/images/icons/go-back.png')}}">
+            </div>
+            <div id="footer-btn-5" class="footer-button">
+                <img src="{{asset('/images/icons/go-back.png')}}">
+            </div>
+            <div id="footer-btn-6" class="footer-button">
+                <img src="{{asset('/images/icons/go-back.png')}}">
+            </div>
+            <div id="footer-btn-7" class="footer-button">
+                <img src="{{asset('/images/icons/go-back.png')}}">
+            </div>
+
+
         </div>
 
     </div>
@@ -34,57 +76,7 @@
     <script src="{{asset('/js/camera.js')}}"></script>
 
     <script>
-        const gridContainer = document.getElementById('lentes-grid-3');
 
-        // Função para criar e adicionar os elementos de imagem ao grid
-        function popularGrid() {
-            lentes.forEach(lente => {
-                const iconContainer = document.createElement('div');
-                iconContainer.classList.add('icon-container');
-
-                const img = document.createElement('img');
-                img.src = lente.src;
-
-                iconContainer.appendChild(img);
-                gridContainer.appendChild(iconContainer);
-            });
-        }
-
-        // Chamar a função para popular o grid quando a página carregar
-        window.addEventListener('load', popularGrid);
-
-
-        function cabecalhoPequeno() {
-            document.getElementById('capa').style.position = 'fixed';
-            document.getElementById('capa').style.zIndex = '2';
-            document.getElementById('capa').style.height = '14vh';
-            document.getElementById('capa').style.width = '200%';
-            document.getElementById('capa').style.borderRadius = '0 0 100% 100%';
-            document.getElementById('logo').style.width = '10vh';
-            document.getElementById('logo').style.marginTop = '50px';
-        }
-
-        function cabecalhoGrande() {
-            document.getElementById('capa').style.height = '34vh';
-            document.getElementById('capa').style.borderRadius = '0 0 50% 50%';
-            document.getElementById('logo').style.width = '23vh';
-            document.getElementById('logo').style.marginTop = '200px';
-        }
-
-        function cabecalhoCapa() {
-            document.getElementById('capa').style.height = '200%';
-            document.getElementById('capa').style.borderRadius = '0 0 0 0';
-            document.getElementById('logo').style.width = '30vh';
-            document.getElementById('logo').style.marginTop = '-200px';
-        }
-
-        setTimeout(function () {
-            document.getElementById('logo').classList.add('show');
-        }, 200); // 2000
-
-        setTimeout(function () {
-            cabecalhoGrande();
-        }, 500); // 5000
     </script>
 </body>
 
