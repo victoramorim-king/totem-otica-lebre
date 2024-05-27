@@ -42,13 +42,32 @@ Route::get('/camera-content', function () {
 });
 
 // Totem Content
-Route::get('/comparacao-content', function () {
+Route::get('/comparison-content', function () {
     return view('totem.comparacao');
+});
+
+// Totem Content
+Route::get('/teste', function () {
+    return view('totem.teste');
 });
 
 Route::get('/admin', function () {
     return view('admin.index');
 });
+
+Route::get('/admin/lentes-content', function () {
+    return view('admin.lentes');
+});
+
+Route::get('/admin/videos-content', function () {
+    return view('admin.videos');
+});
+
+Route::get('/admin/galeria-content', function () {
+    return view('admin.galeria');
+});
+
+
 
 
 

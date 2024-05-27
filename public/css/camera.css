@@ -10,11 +10,9 @@
     background-color: var(--fundo-escuro-transparente);
 }
 
-video {
+#video {
     transform: scaleX(-1); /* Espelhar o vídeo horizontalmente */
     object-fit: cover;
-    width: 3415px;
-    height: 100vh;
     background-color: white;
     left: 0;
     top: 0;

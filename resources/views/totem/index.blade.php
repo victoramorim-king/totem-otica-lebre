@@ -7,6 +7,8 @@
     <title>Ótica Lebre</title>
     <link rel="stylesheet" href="{{ asset('/css/totem.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/camera.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/comparison.css') }}">
+
 </head>
 
 <body>
@@ -50,19 +52,22 @@
             </div>
             <span id="footer-btn-span"></span>
             <div id="footer-btn-3" class="footer-button">
-                <img src="{{asset('/images/icons/go-back.png')}}">
+                <img src="{{asset('/images/icons/gallery.png')}}">
+                
             </div>
-            <div id="footer-btn-4" class="footer-button">
-                <img src="{{asset('/images/icons/go-back.png')}}">
+      
+            <div id="footer-btn-4" class="footer-button" >
+                <img src="{{asset('/images/icons/square.png')}}">
             </div>
-            <div id="footer-btn-5" class="footer-button">
-                <img src="{{asset('/images/icons/go-back.png')}}">
+            <div id="footer-btn-5" class="footer-button" onclick="setMode('double')">
+                <img src="{{asset('/images/icons/square-2.png')}}" style="width:65px;">
+                
             </div>
-            <div id="footer-btn-6" class="footer-button">
-                <img src="{{asset('/images/icons/go-back.png')}}">
+            <div id="footer-btn-6" class="footer-button" onclick="setMode('quad')">
+                <img src="{{asset('/images/icons/square-4.png')}}">
             </div>
             <div id="footer-btn-7" class="footer-button">
-                <img src="{{asset('/images/icons/go-back.png')}}">
+                <img src="{{asset('/images/icons/home.png')}}">
             </div>
 
 
@@ -74,6 +79,9 @@
 
     <script src="{{asset('/js/navigation.js')}}"></script>
     <script src="{{asset('/js/camera.js')}}"></script>
+    <script src="{{asset('/js/comparison.js')}}"></script>
+    <script src="{{asset('/js/galeria.js')}}"></script>
+
 
     <script>
 

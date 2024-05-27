@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/images/{tipo}', [\App\Http\Controllers\ImageController::class, 'index'])->name('getAllImages');
+Route::get('/videos', [\App\Http\Controllers\VideoController::class, 'index'])->name('getAllVideos');
 
 
 
