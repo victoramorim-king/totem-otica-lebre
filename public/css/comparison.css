@@ -1,15 +1,24 @@
 #image-viewer {
-    display: flex;
+    display: grid;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    padding: 10px;
+    margin-top: 59px;
+    width: 100vw;
+}
+
+#image-viewer img.selection-mode {
+    border: 2px solid gray;
+    animation: wobble 0.5s infinite alternate;
+}
+
+#image-viewer img {
+    border-radius: 15px;
 }
 
 #image-viewer.single img {
-    max-width: 100%;
-    height: auto;
+    max-width: 123%;
+    max-height: 54vh;
+    border-radius: 15px;
 }
 
 #image-viewer.double {
@@ -18,19 +27,32 @@
 }
 
 #image-viewer.double img {
-    max-width: 45%;
-    height: auto;
+    max-height: 54vh;
+    border-radius: 15px;
 }
 
 #image-viewer.quad {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 10px;
+    grid-gap: 5px;
+    border-radius: 15px;
+    width: 100%;
+    margin-left: 100%;
+    transform: translate(-50%, 10px);
 }
 
 #image-viewer.quad img {
     max-width: 100%;
-    height: auto;
+    height: 26.5vh;
+    border-radius: 15px;
+}
+
+#carrossel-container{
+    position: fixed;
+    width: 80%;
+    margin-left: 50%;
+    transform: translate(-50%);
+    bottom: 9vh;
 }
 
 .carrossel {
@@ -46,6 +68,16 @@
 .carrossel-item {
     max-width: 100px;
     cursor: pointer;
+    border-radius: 15px;
+    transition: 0.3s ease;
+
+}
+
+.carrossel-item.selected {
+    opacity: 1;
+    transform: scale(1);
+    border: #00A554 solid 5px;
+
 }
 
 .dragging {
@@ -56,4 +88,11 @@
     /* Adjust this as needed */
 }
 
-</style>
+@keyframes wobble {
+    0% {
+        transform: rotate(2deg);
+    }
+    100% {
+        transform: rotate(-2deg);
+    }
+}

@@ -33,13 +33,16 @@
     /* 100% opacidade */
     --fundo-icone-navegacao-gradient-2: #05DA72;
     /* 100% opacidade */
-    --largura-altura-icone-navegacao: 115px;
+    --largura-altura-icone-navegacao: 6vh;
 
 }
 
 body,
 html {
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+
 }
 
 /* Estilizando a barra de rolagem no Chrome, Safari e Edge */
@@ -120,6 +123,8 @@ body {
     background: linear-gradient(to top, #005f2f, #00a655);
     transition: 1s ease-in-out;
     transform: translate(-25%, 0);
+    position: fixed;
+    z-index: 100;
 }
 
 .content {
@@ -127,8 +132,9 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 50%;
 }
+
+
 
 .content img {
     width: 20%;
@@ -144,7 +150,7 @@ body {
 }
 
 #main-menu {
-    margin-top: 10%;
+    margin-top: 76px;
     width: 100%;
     height: 200px;
     display: flex;
@@ -161,12 +167,12 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 756px;
+    width: 66.66%;
 }
 
 #menu-items-container>div {
-    width: 178px;
-    height: 178px;
+    width: 16.66vw;
+    height: 16.66vw;
     position: relative;
     /* Posicionamento relativo para os elementos filhos */
     background: #FFFFFF;
@@ -205,20 +211,13 @@ body {
 }
 
 #lentes-gride-container {
+    width: 100vw;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: top;
-    width: 100%;
-    max-height: 1111px;
+    justify-content: center;
 
 }
 
 #videos-gride-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: top;
     width: 100%;
     max-height: 1111px;
 
@@ -227,32 +226,29 @@ body {
 .grid-3 {
     margin-top: 45px;
     display: grid;
-    grid-template-columns: repeat(3, auto);
-    gap: 0px;
-    overflow-x: hidden;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 80%;
+    height: 53vh;
+    padding: 15px 45px;
     overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.grid-3>img {
     width: 100%;
+    border-radius: 15px;
+    box-shadow: rgba(45, 45, 45, 0.13);
+
 }
 
 .grid-3-video {
     margin-top: 45px;
     display: grid;
     grid-template-columns: repeat(3, auto);
-    gap: 0px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    width: 100%;
+    gap: 20px;
+    width: 80vw;
     justify-content: space-evenly;
-}
-
-.grid-3>div>img {
-    width: 270px;
-}
-
-.grid-3>div>video {
-    padding: 10px;
-    width: 100% !important;
-    height: auto !important;
 }
 
 
@@ -261,15 +257,13 @@ body {
     font-size: 48px;
     font-family: Arial, Helvetica, sans-serif;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
-    padding-left: 50px;
-    padding-right: 50px;
     background: linear-gradient(to top, #005f2f, #00a655);
     bottom: -156px;
-    width: 980px;
-    height: 156px;
-    position: absolute;
+    width: 100%;
+    height: 8vh;
+    position: fixed;
     transition: 0.5s ease-in-out;
     color: var(--fundo-branco);
 }
@@ -278,7 +272,7 @@ body {
 .footer-button {
     background: linear-gradient(to top, #005f2f, #05DA72);
     box-shadow: #2D2D2D22 0px 0px 15px 5px;
-    display: flex ;
+    display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -295,7 +289,7 @@ body {
 }
 
 .footer-button>img {
-    width: 85px;
+    width: 8vw;
 }
 
 /* #carrossel-container {
@@ -320,19 +314,19 @@ body {
 .carrossel-item-container {
     width: 150px;
     /* Tamanho do círculo */
-    /* height: 150px; */
-    /* Tamanho do círculo */
-    /* border-radius: 50%;
+/* height: 150px; */
+/* Tamanho do círculo */
+/* border-radius: 50%;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #2d2d2d; */
-    /* Cor de fundo opcional */
-    /* margin: 0 10px; */
-    /* Espaçamento entre os itens */
-    /* flex: 0 0 auto; */
-    /* Garante que os itens não encolham ou cresçam */
+/* Cor de fundo opcional */
+/* margin: 0 10px; */
+/* Espaçamento entre os itens */
+/* flex: 0 0 auto; */
+/* Garante que os itens não encolham ou cresçam */
 /* } */
 
 /* .carrossel-item {
@@ -340,18 +334,20 @@ body {
     width: 196px;
     object-fit: cover;
     transform: translate(0, 20px); */
-    /* Ajuste os valores conforme necessário */
+/* Ajuste os valores conforme necessário */
 
 /* } */
 
 #clientes-grid-3 img {
     cursor: pointer;
-    border: 2px solid transparent;
     transition: opacity 0.3s ease-in-out, border 0.3s ease-in-out, max-width 0.3s ease-in-out;
+    border-radius: 15px;
+    box-shadow: -4px 10px 25px 7px rgba(45, 45, 45, 0.1);
+
 }
 
 #clientes-grid-3 img.selected {
-    border: 2px solid green;
+    border: 5px solid #05DA72;
 }
 
 #clientes-grid-3 img.unselected {
@@ -363,6 +359,7 @@ body {
 #fullscreen-overlay {
     display: none;
     position: fixed;
+    justify-content: center;
     top: 0;
     left: 0;
     width: 100%;
@@ -370,22 +367,39 @@ body {
     background-color: rgba(0, 0, 0, 0.9);
     z-index: 1000;
     text-align: center;
-    padding-top: 20px;
+}
+
+#header-galeria {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px;
+}
+
+#counter-container {
+    margin-left: 10vw;
+}
+
+#counter {
+    display: none;
+}
+
+#galeria-btn-container {
+    margin-right: 10vw;
+
 }
 
 #fullscreen-image {
-    max-width: 80%;
-    max-height: 80%;
+    max-width: 100%;
+    max-height: 100%;
     margin: 0 auto;
+    right: 0;
+    top: 0;
 }
 
 #compare-btn-container {
     display: none;
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1001;
 }
 
 #compare-btn-container button {
@@ -412,6 +426,12 @@ body {
     opacity: 0.5;
 }
 
+
+#clientes-gride-container{
+    display: flex;
+    justify-content: center;
+}
+
 #clientes-grid-3 img {
     transition: transform 0.3s ease;
 }
@@ -421,10 +441,34 @@ body {
     /* Definindo a opacidade completa para imagens selecionadas */
     transform: scale(1);
 
-    /* Restaurando o tamanho original da imagem */
 }
 
 #clientes-grid-3 img.unselected {
     transform: scale(0.8);
     opacity: 0.5;
 }
+
+
+
+.default-btn{
+    background: linear-gradient(to top, #00A554, #05DA72);
+    border-radius: 15px;
+    border: 0px;
+    color: white;
+
+}
+
+.neutral-btn{
+    background: linear-gradient(to top, #707070, #ACACAC);
+    border-radius: 15px;
+    border: 0px;
+    color: white;
+}
+
+.danger-btn{
+    background: linear-gradient(to top, #A51E00, #DA2B05);
+    border-radius: 15px;
+    border: 0px;
+    color: white;
+}
+

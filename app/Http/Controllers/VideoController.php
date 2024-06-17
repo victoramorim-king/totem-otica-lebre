@@ -8,26 +8,23 @@ use Illuminate\Support\Facades\Storage;
 
 class VideoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // $videos = Video::all();
-        $videos = [];
+        // Get the value of 'justActives' from the request, default to false if not present
+        $justActives = $request->input('justActives', false);
 
-        $videos[] = [
-            'path' => asset('videos/demo.mp4'),
-            'active' => 'true',
-        ];
+        // Build the query
+        $query = Video::query();
 
-        $videos[] = [
-            'path' => asset('videos/demo2.mp4'),
-            'active' => 'true',
-        ];
+        // Apply the filter if 'justActives' is true
+        if ($justActives) {
+            $query->where('active', true);
+        }
 
-        $videos[] = [
-            'path' => asset('videos/demo3.mp4'),
-            'active' => 'true',
-        ];
+        // Execute the query and get the results
+        $videos = $query->orderByDesc('id')->get();
 
+        // Return the results as a JSON response
         return response()->json($videos);
     }
 
@@ -39,15 +36,16 @@ class VideoController extends Controller
 
         if ($request->file('video')) {
             $file = $request->file('video');
-            $path = $file->store('videos', 'public'); // Armazenando na pasta 'videos' no disco 'public'
-    
+            $path = $file->store('videos', 'public');
+
             // Salvar o caminho do vídeo no banco de dados
             $video = new Video();
+            $video->filename = $file->getClientOriginalName();
             $video->path = $path;
-            $video->active = $request->has('active') ? $request->active : true; // Padrão: ativo
+            $video->active = $request->has('active');
             $video->save();
         }
-    
+
         return response()->json(['message' => 'Vídeo carregado com sucesso!', 'video' => $video], 201);
     }
 
@@ -69,7 +67,7 @@ class VideoController extends Controller
         if (!$video) {
             return response()->json(['message' => 'Video not found'], 404);
         }
-
+        
         $request->validate([
             'video' => 'mimes:mp4,mov,avi,wmv|max:20480',
             'active' => 'boolean',

@@ -2,21 +2,27 @@
     position: fixed;
     display: none;
     top: 0;
-    left: 50%; /* Posiciona a div no meio horizontal da tela */
-    transform: translateX(-34%);   
-    z-index: 1;    
     left: 0;
-    width: 3415px;
+    /* Posiciona a div no meio horizontal da tela */
+    z-index: 1;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 316vw;
+    height: 100vh;
     background-color: var(--fundo-escuro-transparente);
 }
 
 #video {
-    transform: scaleX(-1); /* Espelhar o vídeo horizontalmente */
+    transform: scaleX(-1);
+    /* Espelhar o vídeo horizontalmente */
     object-fit: cover;
     background-color: white;
+    width: 100vw;
     left: 0;
     top: 0;
     z-index: -1;
+    object-fit: cover;
+
 }
 
 .mask {
@@ -45,7 +51,7 @@
     margin-top: 5px;
     background-color: #2d2d2d88;
     padding: 20px;
-    border-radius: 20px;            
+    border-radius: 20px;
 }
 
 #photos {
@@ -67,7 +73,8 @@
     max-height: 100%;
     object-fit: contain;
     border: 2px solid #ccc;
-    transform: scaleX(-1); /* Espelhar o vídeo horizontalmente */
+    transform: scaleX(-1);
+    /* Espelhar o vídeo horizontalmente */
 
 }
 
@@ -77,6 +84,7 @@ button {
     font-size: 16px;
     cursor: pointer;
 }
+
 
 #snap-btn {
     position: absolute;
@@ -90,7 +98,7 @@ button {
     cursor: pointer;
 }
 
-.camera-buttons-container{
+.camera-buttons-container {
     left: 50%;
     transform: translateX(-50.9%);
     width: 100vw;
@@ -102,11 +110,9 @@ button {
     align-items: center;
     justify-content: space-around;
     padding: 50px;
-
-
 }
 
-.camera-button{
+.camera-button {
     display: flex;
     border: #ccc solid 4px;
     flex-direction: row;
@@ -116,14 +122,91 @@ button {
     height: var(--largura-altura-icone-navegacao);
     background-color: var(--fundo-escuro-transparente);
     border-radius: var(--curvatura-bordas-icone-navegacao);
-    
+    position: relative; /* Added for pseudo-element positioning */
 }
 
-.camera-button:hover{
+.camera-button:hover {
     transform: scale(0.9);
     transition: 0.1s ease-in-out;
 }
 
-.camera-button>img{
-    width: 85px;
+.camera-button > img {
+    width: 55px !important;
+}
+
+.camera-button.disabled::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 102%;
+    height: 6px;
+    background-color: #ccc;
+    transform: rotate(45deg);
+    transform-origin: center;
+}
+
+
+
+.timerLabel {
+    background-color: white;
+    color: #2d2d2d;
+    border-radius: 100%;
+    padding: 10px;
+    position: absolute;
+    transform: translate(40px, -40px);
+    width: 10px; /* Ajustei o width para 40px para corresponder ao tamanho do círculo */
+    height: 10px; /* Ajustei o height para 40px para corresponder ao tamanho do círculo */
+    display: none;
+    justify-content: center;
+    align-items: center; /* Adicionei align-items: center para centralizar verticalmente */
+    text-align: center;  /* Texto centralizado */
+    transition: 1s ease-in-out;
+}
+
+.timerLabel.active{
+
+    background-color: white;
+    color: #2d2d2d;
+    border-radius: 100%;
+    padding: 10px;
+    position: absolute;
+    transform: translate(0, 0);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centraliza o conteúdo verticalmente */
+    text-align: center;  /* Texto centralizado */
+    transition: 1s ease-in-out;
+}
+
+#image-preview-container{
+    z-index: 999999999;
+    display: block;
+    transform: translate(-50%, 0);
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin-left: 50%;
+    width: 100vw;
+}
+
+#image-preview-container img{
+    transform: scaleX(-1);
+    width: 100vw;
+}
+
+#preview-buttons-container{
+    left: 50%;
+    transform: translateX(-50.9%);
+    width: 100vw;
+    height: 200px;
+    position: fixed;
+    bottom: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 50px;
 }

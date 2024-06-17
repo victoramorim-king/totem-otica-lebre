@@ -10,8 +10,10 @@ function navigateTo(page, images) {
         .then(html => {
             content.innerHTML = html;
             if (page == 'comparison') {
+             
                 changeImage();
                 populateCarrossel();
+                setMode('single')
             }
         })
         .catch(error => console.error('Error loading page:', error));
@@ -42,10 +44,14 @@ function showFooter(page) {
     switch (page) {
         case 'galeria':
             currentPage = page
-            //document.querySelector("#footer-btn-1").innerHTML = "Voltar ao menu";
+            document.querySelector("#footer-btn-1").style.display = "flex";
             document.getElementById('footer-btn-1').onclick = function () {
                 openMenu()
             };
+
+            document.querySelector("#footer-label").style.display = "flex";
+            document.querySelector("#footer-label").innerHTML = "Galeria";
+
             document.querySelector("#footer-btn-2").style.display = "flex";
             document.getElementById('footer-btn-2').onclick = function () {
                 openCamera()
@@ -145,7 +151,7 @@ function openGaleria() {
     popularGrid('clientes')
 }
 
-function openComparison(images) {
+function openComparison() {
     toogleFadeInOut(currentPage)
     cabecalhoPequeno()
     navigateTo('comparison')
@@ -191,9 +197,7 @@ function openCamera() {
     async function startCamera(cameraId) {
         const constraints = {
             video: {
-                deviceId: cameraId,
-                width: { ideal: 3840 },
-                height: { ideal: 2160 }
+                deviceId: cameraId
             }
         };
 
@@ -201,8 +205,11 @@ function openCamera() {
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
             const video = document.getElementById('video');
             video.srcObject = stream;
+            video.onloadedmetadata = () => {
+                video.style.width = '100%'; // Set video width to 100% after stream is attached
+            };
         } catch (err) {
-            console.error('Erro ao acessar a câmera: ' + err);
+            console.error('Error accessing camera: ' + err);
         }
     }
 
@@ -235,29 +242,37 @@ function closeCamera() {
 
 
 function popularGrid(tipo) {
-    fetch(`/api/images/${tipo}`)
+    fetch(`/api/images/${tipo}?justActives=1`)
         .then(response => response.json())
         .then(images => {
             const gridContainer = document.getElementById(`${tipo}-grid-3`); // Seleciona a div onde as imagens serão adicionadas
 
             images.forEach(image => {
                 const img = document.createElement('img');
-                img.src = image.path;
+                img.src = '/storage/' + image.path;
+                img.addEventListener('click', () => {
+                    if (!selecting) {
+                        openFullscreen(img)
+                        // Fechar a visualização em tela cheia ao clicar no overlay
+                        const fullscreenOverlay = document.getElementById('fullscreen-overlay');
+                        fullscreenOverlay.addEventListener('click', function () {
+                            this.style.display = 'none';
+                        });
+                    }
+
+                })
                 gridContainer.appendChild(img); // Adiciona a imagem à div
 
             });
 
-            // Fechar a visualização em tela cheia ao clicar no overlay
-            const fullscreenOverlay = document.getElementById('fullscreen-overlay');
-            fullscreenOverlay.addEventListener('click', function () {
-                this.style.display = 'none';
-            });
+
         })
         .catch(error => console.error('Erro ao carregar página:', error));
+
 }
 
 function popularGridVideos() {
-    fetch('/api/videos')
+    fetch('/api/videos?justActives=true')
         .then(response => response.json())
         .then(videos => {
             const gridContainer = document.getElementById('videos-grid-3'); // Seleciona a div onde os vídeos serão adicionados
@@ -266,12 +281,34 @@ function popularGridVideos() {
             videos.forEach(video => {
                 if (video.active) { // Verifica se o vídeo está ativo
                     const videoElement = document.createElement('video');
-                    videoElement.src = video.path;
-                    videoElement.controls = true;
+                    videoElement.src = '/storage/' + video.path + '#t=0.5';
+                    videoElement.className = 'video-thumbnail';
+                    videoElement.controls = false;
                     videoElement.width = 320; // Define a largura do vídeo (ajuste conforme necessário)
                     videoElement.height = 240; // Define a altura do vídeo (ajuste conforme necessário)
+                    videoElement.dataset.video = '/storage/' + video.path; // Add #t=0.5 to the video path
                     gridContainer.appendChild(videoElement); // Adiciona o vídeo à div
                 }
+            });
+
+            // Add event listeners for the thumbnails
+            document.querySelectorAll('.video-thumbnail').forEach(thumbnail => {
+                thumbnail.addEventListener('click', () => {
+                    const videoSrc = thumbnail.getAttribute('data-video');
+                    const modal = document.getElementById("videoModal");
+                    const modalVideo = document.getElementById("modalVideo");
+
+                    modalVideo.src = videoSrc;
+                    modalVideo.controls = false;
+                    modalVideo.autoplay = true;
+                    modal.style.display = "block";
+
+                    modalVideo.addEventListener('ended', () => {
+                        modal.style.display = "none";
+                        modalVideo.pause();
+                        modalVideo.src = "";
+                    });
+                });
             });
         })
         .catch(error => console.error('Erro ao carregar vídeos:', error));
@@ -286,19 +323,23 @@ function popularGridVideos() {
 function cabecalhoPequeno() {
     document.getElementById('capa').style.position = 'fixed';
     document.getElementById('capa').style.zIndex = '2';
-    document.getElementById('capa').style.height = '14vh';
+    document.getElementById('capa').style.height = '10vh';
     document.getElementById('capa').style.width = '200%';
     document.getElementById('capa').style.borderRadius = '0 0 100% 100%';
-    document.getElementById('logo').style.width = '10vh';
-    document.getElementById('logo').style.marginTop = '50px';
+    document.getElementById('logo').style.width = '7vh';
+    document.getElementById('logo').style.marginTop = '1vh';
+    document.querySelector('#content').style.marginTop = "10vh"
 }
 
 function cabecalhoGrande() {
-    document.getElementById('capa').style.height = '34vh';
+    document.getElementById('capa').style.height = '26vh';
     document.getElementById('capa').style.borderRadius = '0 0 50% 50%';
     document.getElementById('capa').style.position = '';
-    document.getElementById('logo').style.width = '23vh';
-    document.getElementById('logo').style.marginTop = '200px';
+    document.getElementById('logo').style.width = '15vh';
+    document.querySelector('#content').style.position = "absolute"
+    document.getElementById('logo').style.marginTop = '3vh';
+    document.querySelector('#content').style.marginTop = "26vh"
+
 }
 
 function cabecalhoCapa() {
@@ -306,6 +347,8 @@ function cabecalhoCapa() {
     document.getElementById('capa').style.borderRadius = '0 0 0 0';
     document.getElementById('logo').style.width = '30vh';
     document.getElementById('logo').style.marginTop = '-200px';
+    document.querySelector('#content').style.marginTop = "26vh"
+
 }
 
 setTimeout(function () {
@@ -316,3 +359,23 @@ setTimeout(function () {
     openMenu();
     currentPage = 'menu';
 }, 500); // 5000
+
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById("videoModal");
+    const modalVideo = document.getElementById("modalVideo");
+    const closeModal = document.getElementById("closeModalBtn");
+
+    closeModal.addEventListener('click', () => {
+        modal.style.display = "none";
+        modalVideo.pause();
+        modalVideo.src = "";
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target == modal) {
+            modal.style.display = "none";
+            modalVideo.pause();
+            modalVideo.src = "";
+        }
+    });
+});

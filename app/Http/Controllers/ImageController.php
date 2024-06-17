@@ -8,52 +8,29 @@ use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
-    public function index($tipo)
+    public function index(Request $request, $tipo)
     {
-        $lentes = [];
-        $clientes = [];
+        // Get the value of 'justActives' from the request, default to false if not present
+        $justActives = $request->input('justActives', false);
 
-        // Preenchendo o array de lentes
-        for ($i = 0; $i < 18; $i++) {
-            $lentes[] = [
-                'filename' => 'lente',
-                'path' => asset('images/lentes/teste1.png'),
-                'active' => 'true',
-                'category' => 'lentes',
-            ];
+        // Build the query
+        $query = Image::where('category', $tipo);
+
+        // Apply the filter if 'justActives' is true
+        if ($justActives) {
+            $query->where('active', true);
         }
 
-        // Preenchendo o array de clientes
-        for ($i = 0; $i < 18; $i++) {
-            $clientes[] = [
-                'filename' => 'cliente',
-                'path' => asset('images/clientes/oculos4.png'),
-                'active' => 'true',
-                'category' => 'clientes',
-            ];
-        }
+        // Execute the query and get the results
+        $images = $query->orderByDesc('id')->get();
 
-        switch ($tipo) {
-            case "lentes":
-                return response()->json($lentes);
-                break;
-            case "clientes":
-                return response()->json($clientes);
-                break;
-            default:
-                return response()->json([]); // Retorna um array vazio se o tipo não for correspondido
-                break;
-        }
+        // Return the results as a JSON response
+        return response()->json($images);
     }
 
 
     public function store(Request $request)
     {
-        $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'category' => 'required|string',
-            'active' => 'boolean',
-        ]);
 
         $image = $request->file('image');
         $path = $image->store('images', 'public');
@@ -62,10 +39,9 @@ class ImageController extends Controller
         $newImage->filename = $image->getClientOriginalName();
         $newImage->path = $path;
         $newImage->category = $request->category;
-        $newImage->active = $request->has('active') ? $request->active : true;
+        $newImage->active = $request->has('active');
         $newImage->save();
-
-        return response()->json($newImage, 201);
+        return response()->json(['message' => 'ok!'], 201);
     }
 
     public function show($id)
@@ -78,6 +54,7 @@ class ImageController extends Controller
 
         return response()->json(['message' => 'Image not found'], 404);
     }
+
 
     public function update(Request $request, $id)
     {

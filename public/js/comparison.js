@@ -1,11 +1,32 @@
 // scripts.js
 
+
 let draggedImageSrc = null;
 let clone = null;
+let single = [];
+let double = []
+let quad = [];
+let carroselSelectedImage = null;
+let carrosselSelectionMode = false;
+
+
 
 function setMode(mode) {
     const viewer = document.getElementById('image-viewer');
+    selectedImages.forEach(image => {
+        if (single.length < 1) {
+            single.push(image)
+        }
 
+        if (double.length < 2) {
+            double.push(image)
+        }
+
+        if (quad.length < 4) {
+            quad.push(image)
+        }
+
+    });
     // Clear existing mode classes
     viewer.className = '';
 
@@ -14,19 +35,36 @@ function setMode(mode) {
 
     // Update images based on the mode
     if (mode === 'single') {
-        viewer.innerHTML = `<img src="/images/clientes/oculos4.png" id="viewer-image" ondrop="drop(event)" ondragover="allowDrop(event)" ontouchstart="touchStart(event)" ontouchmove="touchMove(event)" ontouchend="touchEnd(event)">`;
+        viewer.innerHTML = `<img src="${single[0]}" id="viewer-image" onclick="swapCarroselImg(this)">`;
     } else if (mode === 'double') {
-        viewer.innerHTML = `
-            <img src="/images/clientes/oculos4.png" id="viewer-image" ondrop="drop(event)" ondragover="allowDrop(event)" ontouchstart="touchStart(event)" ontouchmove="touchMove(event)" ontouchend="touchEnd(event)">
-            <img src="/images/clientes/oculos4.png" id="viewer-image" ondrop="drop(event)" ondragover="allowDrop(event)" ontouchstart="touchStart(event)" ontouchmove="touchMove(event)" ontouchend="touchEnd(event)">
+        if (double.length == 1) {
+            viewer.innerHTML = `
+            <img src="${double[0]}" id="viewer-image" onclick="swapCarroselImg(this)">
+            <img src="${double[0]}" id="viewer-image" onclick="swapCarroselImg(this)">
         `;
+        } else {
+            viewer.innerHTML = `
+            <img src="${double[0]}" id="viewer-image" onclick="swapCarroselImg(this)">
+            <img src="${double[1]}" id="viewer-image" onclick="swapCarroselImg(this)">
+        `;
+        }
+
     } else if (mode === 'quad') {
-        viewer.innerHTML = `
-            <img src="/images/clientes/oculos4.png" id="viewer-image" ondrop="drop(event)" ondragover="allowDrop(event)" ontouchstart="touchStart(event)" ontouchmove="touchMove(event)" ontouchend="touchEnd(event)">
-            <img src="/images/clientes/oculos4.png" id="viewer-image" ondrop="drop(event)" ondragover="allowDrop(event)" ontouchstart="touchStart(event)" ontouchmove="touchMove(event)" ontouchend="touchEnd(event)">
-            <img src="/images/clientes/oculos4.png" id="viewer-image" ondrop="drop(event)" ondragover="allowDrop(event)" ontouchstart="touchStart(event)" ontouchmove="touchMove(event)" ontouchend="touchEnd(event)">
-            <img src="/images/clientes/oculos4.png" id="viewer-image" ondrop="drop(event)" ondragover="allowDrop(event)" ontouchstart="touchStart(event)" ontouchmove="touchMove(event)" ontouchend="touchEnd(event)">
-        `;
+        viewer.innerHTML = ''
+        tmp = 0;
+        for (let index = 0; index < 4; index++) {
+
+            viewer.innerHTML += `
+            <img src="${quad[tmp]}" id="viewer-image" onclick="swapCarroselImg(this)">
+           `
+
+            if (tmp == quad.length - 1) {
+                tmp = 0
+            }
+            tmp++
+        }
+
+
     }
 }
 
@@ -93,7 +131,7 @@ function touchEnd(event) {
 
 function populateCarrossel() {
     const carrosselContainer = document.querySelector('.carrossel');
-    
+
     // Limpa o carrossel antes de adicionar novas imagens
     carrosselContainer.innerHTML = '';
     // Percorre o array de URLs de imagens e cria os elementos de imagem
@@ -105,13 +143,50 @@ function populateCarrossel() {
         img.src = src;
         img.className = 'carrossel-item';
         img.draggable = true;
-        img.ondragstart = drag;
-        img.ontouchstart = touchStart;
-        img.ontouchmove = touchMove;
-        img.ontouchend = touchEnd;
+        img.onclick = () => {
+            selectImageFromCarrosel(img);
+        }
 
         itemContainer.appendChild(img);
         carrosselContainer.appendChild(itemContainer);
     });
 }
 
+function selectImageFromCarrosel(image) {
+    // Deselect the previously selected image, if any
+    if (carroselSelectedImage) {
+        carroselSelectedImage.classList.remove('selected');
+    }
+
+    // Select the new image
+    image.classList.add('selected');
+    carroselSelectedImage = image;
+    toggleCarrosselSelectionMode(true)
+}
+
+function toggleCarrosselSelectionMode(option) {
+    const images = document.querySelectorAll('#image-viewer img');
+    carrosselSelectionMode = option;
+
+    images.forEach(img => {
+        if (carrosselSelectionMode) {
+            img.classList.add('selection-mode');
+        } else {
+            img.classList.remove('selection-mode');
+        }
+    });
+}
+
+function swapCarroselImg(event) {
+    if (carroselSelectedImage) {
+        // Swap the src attributes
+        event.src = carroselSelectedImage.src;
+
+
+        // Deselect the bottom image after swapping
+        carroselSelectedImage.classList.remove('selected');
+        carroselSelectedImage = null;
+        toggleCarrosselSelectionMode(false);
+
+    }
+}
