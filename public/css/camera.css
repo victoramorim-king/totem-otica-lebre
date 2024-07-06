@@ -73,7 +73,7 @@
     max-height: 100%;
     object-fit: contain;
     border: 2px solid #ccc;
-    transform: scaleX(-1);
+    /* transform: scaleX(-1); */
     /* Espelhar o vídeo horizontalmente */
 
 }
@@ -193,7 +193,7 @@ button {
 }
 
 #image-preview-container img{
-    transform: scaleX(-1);
+    /* transform: scaleX(-1); */
     width: 100vw;
 }
 

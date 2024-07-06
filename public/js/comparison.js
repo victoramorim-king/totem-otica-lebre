@@ -13,6 +13,7 @@ let carrosselSelectionMode = false;
 
 function setMode(mode) {
     const viewer = document.getElementById('image-viewer');
+    
     selectedImages.forEach(image => {
         if (single.length < 1) {
             single.push(image)
@@ -35,17 +36,17 @@ function setMode(mode) {
 
     // Update images based on the mode
     if (mode === 'single') {
-        viewer.innerHTML = `<img src="${single[0]}" id="viewer-image" onclick="swapCarroselImg(this)">`;
+        viewer.innerHTML = `<img src="${single[0]}" id="viewer-image" onclick="swapCarroselImg(this, 'single')">`;
     } else if (mode === 'double') {
         if (double.length == 1) {
             viewer.innerHTML = `
-            <img src="${double[0]}" id="viewer-image" onclick="swapCarroselImg(this)">
-            <img src="${double[0]}" id="viewer-image" onclick="swapCarroselImg(this)">
+            <img src="${double[0]}" id="viewer-image" onclick="swapCarroselImg(this, 'double')" data-position="0">
+            <img src="${double[0]}" id="viewer-image" onclick="swapCarroselImg(this, 'double')" data-position="1">
         `;
         } else {
             viewer.innerHTML = `
-            <img src="${double[0]}" id="viewer-image" onclick="swapCarroselImg(this)">
-            <img src="${double[1]}" id="viewer-image" onclick="swapCarroselImg(this)">
+            <img src="${double[0]}" id="viewer-image" onclick="swapCarroselImg(this, 'double')" data-position="0">
+            <img src="${double[1]}" id="viewer-image" onclick="swapCarroselImg(this, 'double')" data-position="1">
         `;
         }
 
@@ -55,7 +56,7 @@ function setMode(mode) {
         for (let index = 0; index < 4; index++) {
 
             viewer.innerHTML += `
-            <img src="${quad[tmp]}" id="viewer-image" onclick="swapCarroselImg(this)">
+            <img src="${quad[tmp]}" id="viewer-image" onclick="swapCarroselImg(this, 'quad')" data-position="${index}">
            `
 
             if (tmp == quad.length - 1) {
@@ -131,7 +132,23 @@ function touchEnd(event) {
 
 function populateCarrossel() {
     const carrosselContainer = document.querySelector('.carrossel');
+    single = [];
+    double = [];
+    quad = [];
+    selectedImages.forEach(image => {
+        if (single.length < 1) {
+            single.push(image)
+        }
 
+        if (double.length < 2) {
+            double.push(image)
+        }
+
+        if (quad.length < 4) {
+            quad.push(image)
+        }
+
+    });
     // Limpa o carrossel antes de adicionar novas imagens
     carrosselContainer.innerHTML = '';
     // Percorre o array de URLs de imagens e cria os elementos de imagem
@@ -177,10 +194,22 @@ function toggleCarrosselSelectionMode(option) {
     });
 }
 
-function swapCarroselImg(event) {
+function swapCarroselImg(event, mode) {
     if (carroselSelectedImage) {
         // Swap the src attributes
         event.src = carroselSelectedImage.src;
+        if(mode == 'single'){
+            single[0] = carroselSelectedImage.src;
+        }
+        if(mode == 'double'){
+            index = event.dataset.position;
+            double[index] = carroselSelectedImage.src;
+        }
+
+        if(mode == 'quad'){
+            index = event.dataset.position;
+            quad[index] = carroselSelectedImage.src;
+        }
 
 
         // Deselect the bottom image after swapping

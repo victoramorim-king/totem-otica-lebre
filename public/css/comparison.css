@@ -1,9 +1,13 @@
-#image-viewer {
-    display: grid;
+#image-viwer-container {
     justify-content: center;
     align-items: center;
-    margin-top: 59px;
+    display: flex;
     width: 100vw;
+    height: 68.5vh;
+}
+
+#image-viewer {
+    display: grid;
 }
 
 #image-viewer img.selection-mode {
@@ -16,38 +20,37 @@
 }
 
 #image-viewer.single img {
-    max-width: 123%;
-    max-height: 54vh;
+    max-width: 100%;
+    height: 67vh;
     border-radius: 15px;
 }
 
 #image-viewer.double {
     display: flex;
     justify-content: space-around;
+    width: 100%;
 }
 
 #image-viewer.double img {
-    max-height: 54vh;
+    height: 49vh;
     border-radius: 15px;
 }
 
 #image-viewer.quad {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 5px;
+    grid-gap: 10px;
     border-radius: 15px;
-    width: 100%;
-    margin-left: 100%;
-    transform: translate(-50%, 10px);
+    width: auto;
 }
 
 #image-viewer.quad img {
-    max-width: 100%;
-    height: 26.5vh;
+    width: 100%;
+    height: 34.5vh;
     border-radius: 15px;
 }
 
-#carrossel-container{
+#carrossel-container {
     position: fixed;
     width: 80%;
     margin-left: 50%;
@@ -66,7 +69,7 @@
 }
 
 .carrossel-item {
-    max-width: 100px;
+    width: 100px;
     cursor: pointer;
     border-radius: 15px;
     transition: 0.3s ease;
@@ -84,7 +87,7 @@
     position: absolute;
     pointer-events: none;
     z-index: 1000;
-    max-width: 150px;
+    width: 150px;
     /* Adjust this as needed */
 }
 
@@ -92,6 +95,7 @@
     0% {
         transform: rotate(2deg);
     }
+
     100% {
         transform: rotate(-2deg);
     }

@@ -33,7 +33,8 @@ function takePicture() {
         imagePreview.src = url;
 
         // Show the image preview and buttons
-        document.getElementById('image-preview-container').style.display = 'block';
+        // document.getElementById('image-preview-container').style.display = 'block';
+        saveImage();
     }, 'image/png');
 }
 
@@ -54,6 +55,7 @@ function saveImage() {
         console.log(result.message);
         // Hide the image preview and buttons after saving
         document.getElementById('image-preview-container').style.display = 'none';
+        closeCamera();
     })
     .catch(error => {
         console.error('Error uploading image', error);
@@ -109,12 +111,7 @@ function changeTimer() {
         document.querySelector('#camera-timer-button').classList.remove('disabled');
         
 
-    } else if (timerDuration === 5) {
-        timerDuration = 10;
-        document.querySelector('#camera-timer-button').classList.remove('disabled');
-        document.querySelector('#timerLabel').style.display = 'flex';
-
-    } else {
+    }  else {
         timerDuration = 0;
         document.querySelector('#camera-timer-button').classList.add('disabled');
         document.querySelector('#timerLabel').style.display = 'none';

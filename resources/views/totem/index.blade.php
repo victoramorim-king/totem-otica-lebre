@@ -11,8 +11,10 @@
     <style>
         .video-thumbnail {
             cursor: pointer;
-            width: 320px;
-            height: 240px;
+            width: 100%;
+            border-radius: 15px;
+            height: 100%;
+            box-shadow: -4px 10px 25px 7px rgba(45, 45, 45, 0.1);     
         }
 
         .modal {
@@ -63,14 +65,14 @@
             background-color: var(--fundo-escuro-transparente);
             border-radius: var(--curvatura-bordas-icone-navegacao);
             left: 50%;
-            transform: translate(-50%, 1100px);
+            transform: translate(-50%, 88vh);
             transition: 0.1s ease;
 
 
         }
 
         .modal-close-button-galery:hover {
-            transform: translate(-50%, 1100px) scale(0.9);
+            transform: translate(-50%, 88vh) scale(0.9);
             ;
         }
 
@@ -81,6 +83,10 @@
 
         .modal-close-button>img {
             width: 55px;
+        }
+
+        html, body{
+            overflow-y: auto;
         }
     </style>
 

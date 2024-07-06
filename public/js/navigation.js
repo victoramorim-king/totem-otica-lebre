@@ -10,10 +10,21 @@ function navigateTo(page, images) {
         .then(html => {
             content.innerHTML = html;
             if (page == 'comparison') {
-             
                 changeImage();
                 populateCarrossel();
                 setMode('single')
+            }
+
+            if(page == 'galeria'){
+                popularGrid('clientes')
+            }
+
+            if(page == 'menu'){
+                popularGrid('lentes')
+            } 
+
+            if(page == 'videos'){
+                popularGridVideos()
             }
         })
         .catch(error => console.error('Error loading page:', error));
@@ -137,7 +148,6 @@ function showFooter(page) {
 function openMenu() {
     cabecalhoGrande()
     navigateTo('menu')
-    popularGrid('lentes')
     toogleFadeInOut(currentPage)
     hideFooter()
 
@@ -148,7 +158,7 @@ function openGaleria() {
     cabecalhoGrande()
     navigateTo('galeria')
     showFooter('galeria')
-    popularGrid('clientes')
+    
 }
 
 function openComparison() {
@@ -179,7 +189,6 @@ function openVideos() {
     cabecalhoGrande()
     navigateTo('videos')
     showFooter('videos')
-    popularGridVideos()
 
 
 }
@@ -259,9 +268,10 @@ function popularGrid(tipo) {
                             this.style.display = 'none';
                         });
                     }
-
                 })
-                gridContainer.appendChild(img); // Adiciona a imagem à div
+                if (img) {
+                        document.getElementById(`${tipo}-grid-3`).appendChild(img); // Adiciona a imagem à div
+                }
 
             });
 
@@ -285,7 +295,7 @@ function popularGridVideos() {
                     videoElement.className = 'video-thumbnail';
                     videoElement.controls = false;
                     videoElement.width = 320; // Define a largura do vídeo (ajuste conforme necessário)
-                    videoElement.height = 240; // Define a altura do vídeo (ajuste conforme necessário)
+                    videoElement.height = 565; // Define a altura do vídeo (ajuste conforme necessário)
                     videoElement.dataset.video = '/storage/' + video.path; // Add #t=0.5 to the video path
                     gridContainer.appendChild(videoElement); // Adiciona o vídeo à div
                 }

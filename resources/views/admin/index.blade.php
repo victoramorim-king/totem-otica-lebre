@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fixed Sidebar Example</title>
     <link rel="stylesheet" href="{{asset('/css/admin/index.css')}}">
+    <link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.css">
     <style>
         :root {
             --sidebar-width: 25vw;
@@ -95,7 +96,6 @@
             display: flex;
             justify-content: center;
             width: 100%;
-            height: calc(100vh - var(--sidebar-header-height));
         }
 
         .main-header {
@@ -110,7 +110,7 @@
             position: fixed;
             right: 0;
             z-index: 1000;
-            
+
             width: calc(100vw - var(--sidebar-width));
         }
 
@@ -201,10 +201,11 @@
             border: 1px solid #888;
             width: 80%;
             border-radius: 15px;
-            
+
         }
 
-        .close {
+        .close,
+        .closeCrop {
             color: #aaa;
             float: right;
             font-size: 28px;
@@ -212,6 +213,8 @@
         }
 
         .close:hover,
+        .closeCrop:hover,
+        .closeCrop:focus,
         .close:focus {
             color: black;
             text-decoration: none;
@@ -240,6 +243,78 @@
 
         #openModal img {
             width: 4.43vw;
+        }
+
+        #imageToCrop {
+            width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+        }
+
+        .modal-content-crop {
+            background-color: #fefefe;
+            padding: 20px;
+            border: 1px solid #888;
+            margin: auto;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Estilos para a modal de carregamento */
+        .loading-modal {
+            display: none;
+            /* Inicialmente escondida */
+            position: fixed;
+            z-index: 999999;
+            /* Garante que fique acima de todo o conteúdo */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Fundo escuro semitransparente */
+            overflow: auto;
+        }
+
+        .loading-modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 200px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Estilos para o ícone de carregamento */
+        .loader {
+            border: 4px solid #f3f3f3;
+            /* Luz */
+            border-top: 4px solid #3498db;
+            /* Azul */
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            /* Animação de rotação */
+            margin: 0 auto 10px;
+            /* Centralizado */
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
@@ -280,12 +355,21 @@
         <div id="openModal">
             <img src="{{asset('/images/icons/upload.png')}}" alt="">
         </div>
+        <!-- Modal de carregamento -->
+        <div id="loadingModal" class="loading-modal">
+            <div class="loading-modal-content">
+                <div class="loader"></div>
+                <p>Enviando arquivo...</p>
+            </div>
+        </div>
+
 
         <div id="modal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <h2 id="titulo-modal-imagem">Upload de imagem</h2>
                 <p>Escolha qual imagem a imagem que deseja fazer upload.</p>
+                <img id='uploadPreviewCanva' src="" alt="">
                 <form id="uploadForm" enctype="multipart/form-data" method="POST">
                     <input type="file" class="neutral-btn" name="image" id="image" accept="image/*" required>
                     <input type="text" name="category" id="category" placeholder="Category" required hidden>
@@ -320,6 +404,17 @@
             </div>
         </div>
 
+        <div id="cropperModal" class="modal">
+            <div class="modal-content-crop">
+                <span class="closeCrop">&times;</span>
+                <h2>Recortar Imagem</h2>
+                <div>
+                    <img id="imageToCrop">
+                </div>
+                <button id="cropButton">Recortar</button>
+            </div>
+        </div>
+
         <div class="main-content">
 
             <div id="grid-container" class="fade-in">
@@ -346,7 +441,8 @@
         span.onclick = function () {
             modal.style.display = 'none';
             modalVideo.style.display = 'none';
-
+            document.getElementById('image').value = '';
+            document.getElementById('uploadPreviewCanva').src = '';
         }
 
         span2.onclick = function () {
@@ -365,6 +461,8 @@
         window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = 'none';
+                document.getElementById('image').value = '';
+                document.getElementById('uploadPreviewCanva').src = '';
             }
 
             if (event.target == modalVideo) {
@@ -448,8 +546,8 @@
         }
 
         function popularGridVideos() {
-            document.querySelector('#page-title').innerHTML = 'Vídeos'
             currentPage = 'vídeos';
+            document.querySelector('#page-title').innerHTML = 'Vídeos'
             cancelComparison();
             btn.onclick = function () {
                 modalVideo.style.display = 'block';
@@ -572,68 +670,99 @@
             popularGrid('lentes');
         });
 
+        // Função para exibir a modal de carregamento
+        function showLoadingModal() {
+            document.getElementById('loadingModal').style.display = 'block';
+        }
+
+        // Função para esconder a modal de carregamento
+        function hideLoadingModal() {
+            document.getElementById('loadingModal').style.display = 'none';
+        }
+
+        // Event listener para o formulário de imagens
         document.getElementById('uploadForm').addEventListener('submit', function (event) {
             event.preventDefault();
             const formData = new FormData(this);
-            fetch('http://localhost:8000/api/images', {
+
+            showLoadingModal(); // Mostrar modal de carregamento
+
+            fetch('/api/images', {
                 method: 'POST',
                 body: formData
             })
                 .then(response => {
+                    hideLoadingModal(); // Esconder modal de carregamento após o upload
+
                     if (!response.ok) {
                         throw new Error(`Network response was not ok: ${response.statusText}`);
                     }
-                    return response.text(); // Change to response.text() to handle non-JSON responses
+                    return response.text(); // Altere para response.text() se lidar com respostas não JSON
                 })
                 .then(data => {
                     try {
-                        const jsonData = JSON.parse(data); // Attempt to parse JSON
-                        console.log('Upload successful:', jsonData);
-                        alert('Imagem adicionada com sucesso')
-                        modal.style.display = 'none';
-                        popularGrid(currentPage)
-
+                        const jsonData = JSON.parse(data); // Tentar analisar JSON
+                        console.log('Upload bem-sucedido:', jsonData);
+                        alert('Imagem adicionada com sucesso.');
+                        modal.style.display = 'none'; // Esconder modal após o upload
+                        popularGrid(currentPage); // Atualizar grid, se necessário
+                        document.getElementById('image').value = '';
+                        document.getElementById('uploadPreviewCanva').src = '';
                     } catch (error) {
-                        console.error('Error parsing JSON:', error);
-                        console.log('Response data:', data); // Log the raw response data
-                        alert('Falha ao adicionar imagem')
-                        modal.style.display = 'none';
+                        console.error('Erro ao analisar JSON:', error);
+                        console.log('Dados da resposta:', data); // Registrar dados brutos da resposta
+                        alert('Falha ao adicionar imagem.');
+                        modal.style.display = 'none'; // Esconder modal em caso de falha
                     }
                 })
-                .catch(error => console.error('Error uploading image:', error));
+                .catch(error => {
+                    console.error('Erro ao enviar imagem:', error);
+                    alert('Erro ao enviar imagem. Verifique sua conexão e tente novamente.');
+                    hideLoadingModal(); // Esconder modal de carregamento em caso de erro
+                });
         });
+
+
 
         document.getElementById('uploadFormVideo').addEventListener('submit', function (event) {
             event.preventDefault();
             const formData = new FormData(this);
-            fetch('http://localhost:8000/api/videos', {
+
+            showLoadingModal(); // Mostrar modal de carregamento de vídeos
+
+            fetch('/api/videos', {
                 method: 'POST',
                 body: formData
             })
                 .then(response => {
+                    hideLoadingModal(); // Esconder modal de carregamento de vídeos após o upload
+
                     if (!response.ok) {
                         throw new Error(`Network response was not ok: ${response.statusText}`);
                     }
-                    return response.text(); // Change to response.text() to handle non-JSON responses
+                    return response.text(); // Altere para response.text() se lidar com respostas não JSON
                 })
                 .then(data => {
                     try {
-                        const jsonData = JSON.parse(data); // Attempt to parse JSON
-                        console.log('Upload successful:', jsonData);
-                        alert('Vídeo adicionado com sucesso!')
-                        modalVideo.style.display = 'none';
-                        popularGridVideos()
+                        const jsonData = JSON.parse(data); // Tentar analisar JSON
+                        console.log('Upload de vídeo bem-sucedido:', jsonData);
+                        alert('Vídeo adicionado com sucesso!');
+                        modalVideo.style.display = 'none'; // Esconder modal de vídeo após o upload
+                        popularGridVideos(); // Atualizar grid de vídeos, se necessário
                     } catch (error) {
-                        console.error('Error parsing JSON:', error);
-                        console.log('Response data:', data); // Log the raw response data
-                        alert('Falha ao tentar adicionar um vídeo')
-                        modalVideo.style.display = 'none';
-
-
+                        console.error('Erro ao analisar JSON:', error);
+                        console.log('Dados da resposta:', data); // Registrar dados brutos da resposta
+                        alert('Falha ao tentar adicionar um vídeo.');
+                        modalVideo.style.display = 'none'; // Esconder modal de vídeo em caso de falha
                     }
                 })
-                .catch(error => console.error('Error uploading image:', error));
+                .catch(error => {
+                    console.error('Erro ao enviar vídeo:', error);
+                    alert('Erro ao enviar vídeo. Verifique sua conexão e tente novamente.');
+                    hideLoadingModal(); // Esconder modal de carregamento de vídeos em caso de erro
+                });
         });
+
 
         function deleteVideo(videoId) {
 
@@ -681,7 +810,86 @@
                 });
         }
     </script>
-    <script src='{{asset('/js/admin/galeria.js')}}'></script>
+    <script src="{{asset('/js/admin/galeria.js')}}"></script>
+    <script src="https://unpkg.com/cropperjs"></script>
+    <script>
+        let cropper;
+        const cropperModal = document.getElementById('cropperModal');
+        const imageToCrop = document.getElementById('imageToCrop');
+        const cropButton = document.getElementById('cropButton');
+        const imageInput = document.getElementById('image');
+        const closeModal = document.querySelector('.closeCrop');
+
+        // Abrir o modal de recorte ao selecionar uma imagem
+        imageInput.addEventListener('change', (event) => {
+            const files = event.target.files;
+            if (files && files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    imageToCrop.src = reader.result;
+                    cropperModal.style.display = 'block';
+
+                    // Inicializar o Cropper.js
+                    cropper = new Cropper(imageToCrop, {
+                        aspectRatio: 240 / 160,
+                        viewMode: 1,
+                        autoCropArea: 1,
+                    });
+                };
+                reader.readAsDataURL(files[0]);
+            }
+        });
+
+        // Fechar o modal
+        closeModal.onclick = function () {
+            cropperModal.style.display = 'none';
+            cropper.destroy();
+            modal.style.display = 'none';
+            document.getElementById('image').value = '';
+            document.getElementById('uploadPreviewCanva').src = '';
+        };
+
+        // Recortar a imagem e fazer upload
+        cropButton.addEventListener('click', () => {
+            const canvas = cropper.getCroppedCanvas({
+                width: 240,
+                height: 160,
+            });
+
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+
+                // Atualiza a imagem no elemento img com id 'uploadPreviewCanva'
+                const previewImage = document.getElementById('uploadPreviewCanva');
+                previewImage.src = url;
+
+                // Cria um arquivo de imagem e coloca no input de id 'image'
+                const fileInput = document.getElementById('image');
+                const dataTransfer = new DataTransfer();
+                const file = new File([blob], 'imagemRecortada.jpg', { type: 'image/jpeg' });
+
+                dataTransfer.items.add(file);
+                fileInput.files = dataTransfer.files;
+
+                cropperModal.style.display = 'none';
+                cropper.destroy();
+                alert('Imagem recortada com sucesso!');
+            });
+        });
+
+        // Fechar o modal ao clicar fora dele
+        window.onclick = function (event) {
+            if (event.target === cropperModal) {
+                cropperModal.style.display = 'none';
+                cropper.destroy();
+                modal.style.display = 'none';
+                document.getElementById('image').value = '';
+                document.getElementById('uploadPreviewCanva').src = '';
+
+            }
+
+        };
+    </script>
 </body>
 
 </html>
