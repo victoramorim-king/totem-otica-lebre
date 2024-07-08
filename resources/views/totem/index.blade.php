@@ -88,6 +88,28 @@
         html, body{
             overflow-y: auto;
         }
+
+        #message{
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 99999999999999999999999;
+        }
+
+        #message.visible{
+            opacity: 1;
+        }
+
+        #message.hidden{
+            opacity: 0;
+        }
     </style>
 
 </head>
@@ -103,7 +125,7 @@
 
         <div id="content">
         </div>
-
+        <div id="message"> Sua foto foi salva na galeria</div>
         <div class="video-container fade-in">
             <div class="camera">
                 <video id="video" autoplay></video>

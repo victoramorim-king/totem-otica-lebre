@@ -55,11 +55,21 @@ function saveImage() {
         console.log(result.message);
         // Hide the image preview and buttons after saving
         document.getElementById('image-preview-container').style.display = 'none';
-        closeCamera();
+        showMessage()
     })
     .catch(error => {
         console.error('Error uploading image', error);
     });
+}
+
+function showMessage(){
+    var message = document.querySelector('#message');
+    message.classList.add('visible');
+    message.classList.remove('hidden');
+    setTimeout(() => {
+        message.classList.add('hidden');
+        message.classList.remove('visible');
+    }, 3000)
 }
 
 function discardImage() {
