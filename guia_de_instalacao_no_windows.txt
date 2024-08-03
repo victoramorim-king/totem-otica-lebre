@@ -33,3 +33,35 @@ Fim da configuração no ambiente de homologação, a partir daqui continue no c
 - crie atalho "iniciar totem" na area de trabalho com o seguinte caminho: C:\Users\supor\Projects\risetec\totem-otica-lebre\start_without_prompt.bat
 
 - crie atalho "encerrar totem" na area de trabalho com o seguinte caminho: C:\Users\supor\Projects\risetec\totem-otica-lebre\stop_totem_otica_lebre_service.bat
+
+Segue abaixo as instruções para configurar o widnows para inicar o totem ao ligar o computador:
+
+1. Abrir o Agendador de Tarefas
+   - Pressione `Win + S`, digite "Agendador de Tarefas" e pressione `Enter`.
+
+2. Criar uma Nova Tarefa
+   - No painel à direita, digite "Criar Tarefa" e pressione `Enter`.
+
+3. Configurar a Tarefa
+   - Na guia Geral:
+     - Nome: "Iniciar XAMPP e Laravel"
+     - Marcar: "Executar com os privilégios mais altos"
+   
+   - Na guia Disparadores:
+     - Clique em "Novo..."
+     - Defina o início: "Ao iniciar o computador"
+     - Clique em "OK"
+   
+   - Na guia Ações:
+     - Clique em "Novo..."
+     - Em "Programa/script", insira: `cmd.exe`
+     - Em "Adicionar argumentos (opcional)", insira: `/c "C:\Users\supor\Projects\risetec\totem-otica-lebre\start.bat"`
+     - Clique em "OK"
+   
+   - Na guia Condições e Configurações:
+     - Ajuste as configurações conforme necessário (opções padrão geralmente funcionam bem).
+     - Clique em "OK"
+   
+4. Fechar o Agendador de Tarefas
+   - Clique em "OK" para finalizar a criação da tarefa.
+
