@@ -1,0 +1,35 @@
+- conectar o servidor de homologação via Area de Trabalho Remota do Windows
+	- Host: cloud.risetec.com.br:13398
+	- Usuário: oticaslebre
+	- Senha: OticasLebre@2024
+
+	- use o comando: "C:\xampp\mysql\bin\mysqldump.exe" -u root -p teste > C:\Users\oticaslebre\projects\totem-otica-lebre\public\teste_backup.sql
+	- use o comando: "C:\Windows\System32\tar.exe" -czf C:\Users\oticaslebre\projects\totem-otica-lebre\public\images_backup.tar.gz -C C:\Users\oticaslebre\projects\totem-otica-lebre\storage\app\public images
+
+Fim da configuração no ambiente de homologação, a partir daqui continue no computador onde pretende instalar o totem!
+
+
+- Instalar Xampp - https://www.apachefriends.org/
+- Instalar Composer - https://getcomposer.org/download/
+- Clonar o projeto do GitHub - https://github.com/victoramorim-king/totem-otica-lebre.git
+- Instalar as dependências do projeto com o comando "composer install"
+- Copiar o arquivo .env.example para .env
+- usar comando "php artisan migrate"
+- usar comando "php artisan key:generate" 
+- usar comando "php artisan storage:link"
+
+!!! ATENÇÃO: Altera o caminho de onde os arquivos serão descompactados para ficar de acordo com o ambiente de instalação !!!
+
+- use o comando: Invoke-WebRequest -Uri "https://cloud.risetec.com.br:8089/images_backup.tar.gz" -OutFile "C:\Users\supor\Projects\risetec\totem-otica-lebre\public\images_backup.tar.gz"
+
+- use o comando: tar -xzf "C:\Users\supor\Projects\risetec\totem-otica-lebre\public\images_backup.tar.gz" -C "C:\Users\supor\Projects\risetec\totem-otica-lebre\storage\app\public"
+
+- use o comando: Invoke-WebRequest -Uri "https://cloud.risetec.com.br:8089/teste_backup.sql" -OutFile "C:\Users\supor\Projects\risetec\totem-otica-lebre\teste_backup.sql"
+
+- use o comando: Start-Process -FilePath "C:\xampp\mysql\bin\mysql.exe" -ArgumentList "-u root -e `"CREATE DATABASE IF NOT EXISTS laravel;`"" -NoNewWindow -Wait
+
+- use o comando: cmd /c "C:\xampp\mysql\bin\mysql.exe -u root laravel < C:\Users\supor\Projects\risetec\totem-otica-lebre\teste_backup.sql"
+
+- crie atalho "iniciar totem" na area de trabalho com o seguinte caminho: C:\Users\supor\Projects\risetec\totem-otica-lebre\start_without_prompt.bat
+
+- crie atalho "encerrar totem" na area de trabalho com o seguinte caminho: C:\Users\supor\Projects\risetec\totem-otica-lebre\stop_totem_otica_lebre_service.bat
